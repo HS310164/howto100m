@@ -16,15 +16,17 @@ from torch.utils.data import DataLoader
 from model import Net
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--input_dir', type=str, help='input file directory')
+parser.add_argument('--input2d_dir', type=str, help='input 2d file directory')
+parser.add_argument('--input3d_dir', type=str, help='input 3d file directory')
 parser.add_argument('--output_dir', type=str, help='output directory')
 parser.add_argument('--checkpoint_path', type=str, help='checkpoint file path')
 args = parser.parse_args()
 
 class ExDataset(data.Dataset):
-    def __init__(self, file_path):
+    def __init__(self, file2d_path, file3d_path):
         super(ExDataset, self).__init__()
-        self.files = sorted(glob.glob(os.path.join(file_path, '*.npy')))
+        self.files2d = sorted(glob.glob(os.path.join(file2d_path, '*.npy')))
+        self.files3d = sorted(glob.glob(os.path.join(file3d_path, '*.npy')))
 
     def __len__(self):
         return len(self.files)
@@ -32,7 +34,9 @@ class ExDataset(data.Dataset):
     def __getitem__(self, index):
         file_name = os.path.basename(self.files[index])
         file_name = os.path.splitext(file_name)[0]
-        vi = np.load(self.files[index])
+        vi2d = np.load(self.files2d[index])[0]
+        vi3d = np.load(self.files3d[index])[0]
+        vi = np.concatenate([vi2d, vi3d], axis=1)
         return vi, file_name
 
     
@@ -52,6 +56,8 @@ def main():
         output = []
         with th.no_grad():
             for dim in inputs:
+                dim = dim.reshape([1, -1])
+                print(dim.shape)
                 video = net(dim.cuda())
                 output.append(video.to('cpu').data.numpy())
             outputs = np.array(output)
