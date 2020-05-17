@@ -41,8 +41,8 @@ class ExDataset(data.Dataset):
     def __getitem__(self, index):
         file_name = os.path.basename(self.files2d[index])
         file_name = os.path.splitext(file_name)[0]
-        vi2d = np.load(self.files2d[index])[0]
-        vi3d = np.load(self.files3d[index])[0]
+        vi2d = np.load(self.files2d[index])
+        vi3d = np.load(self.files3d[index])
         vi = np.concatenate([vi2d, vi3d], axis=1)
         return vi, file_name
 
@@ -61,12 +61,12 @@ def main():
     net.cuda()
     for inputs, file_name in dl:
         output = []
+        inputs = inputs[0]
         with th.no_grad():
             for dim in inputs:
                 dim = dim.reshape([1, -1])
-                print(dim.shape)
                 video = net(dim.cuda())
-                output.append(video.to('cpu').data.numpy())
+                output.append(video.to('cpu').data.numpy().reshape([-1]))
             outputs = np.array(output)
             print('finish {}'.format(file_name))
             out_path = os.path.join(args.output_dir, file_name + '.npy')
