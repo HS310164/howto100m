@@ -54,7 +54,8 @@ def main():
             out_path = os.path.join(args.output_dir, file_name + '.npy')
             np.save(out_path, outputs)
 
-
+if __name__ == "__main__":
+    main()
 
 
 
