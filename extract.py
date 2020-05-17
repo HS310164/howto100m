@@ -38,7 +38,7 @@ class ExDataset(data.Dataset):
     
 def main():
     dataset = ExDataset(args.input_dir)
-    dl = DataLoader(dataset, batch_size=1, shuffle=False, num_worker=4, pin_memory=True)
+    dl = DataLoader(dataset, batch_size=1, shuffle=False)
     net = Net()
     net.load_checkpoint(args.checkpoint_path)
     net.eval()
