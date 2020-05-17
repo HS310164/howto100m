@@ -44,10 +44,11 @@ class Net(nn.Module):
         else:
             self.load_state_dict(th.load(path))
 
-    def forward(self, video, text):
+    def forward(self, video):
         video = self.GU_video(video)
-        text = self.GU_text(self.text_pooling(text))
-        return th.matmul(text, video.t())
+        # text = self.GU_text(self.text_pooling(text))
+        # return th.matmul(text, video.t())
+        return video
 
 
 
