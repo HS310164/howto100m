@@ -14,11 +14,6 @@ import torch.utils.data as data
 from torch.utils.data import DataLoader
 
 from model import Net
-from metrics import compute_metrics, print_computed_metrics
-# from gensim.models.keyedvectors import KeyedVectors
-from lsmdc_dataloader import LSMDC_DataLoader
-from msrvtt_dataloader import MSRVTT_DataLoader
-from youcook_dataloader import Youcook_DataLoader
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input_dir', type=str, help='input file directory')
