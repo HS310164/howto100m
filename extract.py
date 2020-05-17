@@ -41,7 +41,7 @@ class ExDataset(data.Dataset):
 
     
 def main():
-    dataset = ExDataset(args.input_dir)
+    dataset = ExDataset(args.input2d_dir, args.input3d_dir)
     dl = DataLoader(dataset, batch_size=1, shuffle=False)
     net = Net(
         video_dim=4096,
