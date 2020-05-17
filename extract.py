@@ -41,7 +41,7 @@ def main():
     dl = DataLoader(dataset, batch_size=1, shuffle=False)
     net = Net(
         video_dim=4096,
-        embd_dim=2048,
+        embd_dim=6144,
         we_dim=300,
         max_words=20
         )
