@@ -32,7 +32,9 @@ class ExDataset(data.Dataset):
         return len(self.files)
 
     def __getitem__(self, index):
-        file_name = os.path.basename(self.files[index])
+        file_name = os.path.basename(self.files2d[index])
+        if not file_name == os.path.basename(self.files3d[index]):
+            raise ValueError('not same file name')
         file_name = os.path.splitext(file_name)[0]
         vi2d = np.load(self.files2d[index])[0]
         vi3d = np.load(self.files3d[index])[0]
