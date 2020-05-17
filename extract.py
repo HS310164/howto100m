@@ -39,7 +39,12 @@ class ExDataset(data.Dataset):
 def main():
     dataset = ExDataset(args.input_dir)
     dl = DataLoader(dataset, batch_size=1, shuffle=False)
-    net = Net()
+    net = Net(
+        video_dim=4096,
+        embd_dim=2048,
+        we_dim=300,
+        max_words=20
+        )
     net.load_checkpoint(args.checkpoint_path)
     net.eval()
     net.cuda()
