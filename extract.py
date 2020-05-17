@@ -27,14 +27,19 @@ class ExDataset(data.Dataset):
         super(ExDataset, self).__init__()
         self.files2d = sorted(glob.glob(os.path.join(file2d_path, '*.npy')))
         self.files3d = sorted(glob.glob(os.path.join(file3d_path, '*.npy')))
+        if not len(self.files2d) == len(self.files3d):
+            raise ValueError('not same number of files')
+        else:
+            self.length = len(self.files2d)
+        for a, b in zip(self.files2d, self.files3d):
+            if not os.path.basename(a) == os.path.basename(b):
+                raise ValueError('not same file name')
 
     def __len__(self):
-        return len(self.files)
+        return self.length
 
     def __getitem__(self, index):
         file_name = os.path.basename(self.files2d[index])
-        if not file_name == os.path.basename(self.files3d[index]):
-            raise ValueError('not same file name')
         file_name = os.path.splitext(file_name)[0]
         vi2d = np.load(self.files2d[index])[0]
         vi3d = np.load(self.files3d[index])[0]
